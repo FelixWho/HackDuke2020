@@ -12,10 +12,16 @@ function Businesses() {
       setBusinessData(snapshot.val());
     })
   }, [])
+
   return (
     <Container className="Businesses">
       <div>
-        {JSON.stringify(businessData)}
+        <ul>
+          {Object.entries(businessData).map(business => (
+            <li>{business[0]}</li>
+          ))
+          }
+        </ul>
       </div>
     </Container>
   );
