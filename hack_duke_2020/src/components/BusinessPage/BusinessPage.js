@@ -20,12 +20,12 @@ function BusinessPage() {
   console.log(businessData);
   if (businessData != null) {
     return (
-      <Container fluid style={{height: "100vh"}}>
+      <Container fluid>
         {Object.entries(businessData.Inventory).map(business => (
           <Row md={3} lg={3} style={{height: "30vh"}}>
-            <Col className="my-auto" style={{fontSize: "2em"}}><div>{business[0]}</div></Col>
-            <Col className="my-auto" style={{fontSize: "2em"}}><div>${business[1].Price.toFixed(2)}</div></Col>
-            <Col className="my-auto"><img src={business[1].url} style={{width: "60%", height: "auto"}}/></Col>
+            <Col className="my-auto" style={{fontSize: "2.5em"}}><div>{business[0]}</div></Col>
+            <Col className="my-auto" style={{fontSize: "2.5em"}}><div>${business[1].Price.toFixed(2)}</div></Col>
+            <Col className="my-auto"><img src={business[1].url} style={{width: "80%", height: "auto", borderRadius: "50px"}}/></Col>
           </Row>
         ))
         }
