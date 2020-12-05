@@ -56,12 +56,12 @@ export class GoogleMap extends Component {
         let coords = { lat: this.state.latitude, lng: this.state.longitude };
 
         const triangleCoords = [
-            {lat: 25.774, lng: -80.190},
-            {lat: 18.466, lng: -66.118},
-            {lat: 24.777, lng: -79.555},
-            {lat: 32.321, lng: -64.757},
-            
-        ];
+            { lat: 25.0, lng: -80.0 },
+            { lat: 50.0, lng: -80.0 },
+            { lat: 50.0, lng: -100.0 },
+            { lat: 25.0, lng: -100.0 },
+          ];
+        
         
        
         
