@@ -34,7 +34,8 @@ export class GoogleMap extends Component {
     let temp_territories = [];
 
     db.ref('Territories').once('value').then((snapshot) => {
-        console.log(snapshot);
+        //console.log(snapshot.val());
+        this.setState({territories: snapshot.val()});
     })
     this.getBusinessCoords();
   };
@@ -59,7 +60,8 @@ export class GoogleMap extends Component {
 
   render() {
     let init_coords = { lat: this.state.latitude, lng: this.state.longitude };
-
+    console.log("territories");
+    console.log(this.state.territories)
     return (
       <Map
         google={this.props.google}
@@ -83,7 +85,7 @@ export class GoogleMap extends Component {
         })}
 
         {/* Render polygons around each location marker */}
-        {this.state.place_coords.map((coord, key) => {
+        {/* {this.state.place_coords.map((coord, key) => {
           return (
             <Polygon
               key={key}
@@ -112,8 +114,27 @@ export class GoogleMap extends Component {
               fillOpacity={0.35}
             />
           );
-        })}
+        })} */}
 
+        {this.state.territories.map((t, key) => {
+            
+            let coord = t.coordinates;
+            console.log(coord[0]);
+            return <Polygon
+            key={key}
+            paths={[
+              coord[0],
+              coord[1],
+              coord[2],
+              coord[3]
+            ]}
+            strokeColor={t.color}
+            strokeOpacity={0.8}
+            strokeWeight={2}
+            fillColor={t.color}
+            fillOpacity={0.35}
+          />
+        })}
         <InfoWindow onClose={this.onInfoWindowClose}>
           <div>
             <h1>{"Info"}</h1>
