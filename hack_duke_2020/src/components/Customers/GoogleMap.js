@@ -122,12 +122,7 @@ export class GoogleMap extends Component {
             console.log(coord[0]);
             return <Polygon
             key={key}
-            paths={[
-              coord[0],
-              coord[1],
-              coord[2],
-              coord[3]
-            ]}
+            paths={Object.values(coord)}
             strokeColor={t.color}
             strokeOpacity={0.8}
             strokeWeight={2}

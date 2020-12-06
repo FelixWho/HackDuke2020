@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import "./Businesses.css";
 import firebase from "../../Firebase/firebase.js"
+import BusinessForm from "./BusinessForm"
 
 function Businesses() {
   let db = firebase.db;
@@ -15,14 +16,7 @@ function Businesses() {
 
   return (
     <Container className="Businesses">
-      <div>
-        <ul>
-          {Object.entries(businessData).map(business => (
-            <li>{business[0]}</li>
-          ))
-          }
-        </ul>
-      </div>
+      <BusinessForm></BusinessForm>
     </Container>
   );
 }
