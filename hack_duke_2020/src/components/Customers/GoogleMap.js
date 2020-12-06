@@ -33,7 +33,7 @@ export class GoogleMap extends Component {
     let db = firebase.db;
     let temp_territories = [];
 
-    db.ref('Territories').once('value').then((snapshot) => {
+    db.ref('Territories').on('value', (snapshot) => {
         //console.log(snapshot.val());
         this.setState({territories: snapshot.val()});
     })
