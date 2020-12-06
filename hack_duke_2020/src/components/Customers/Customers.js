@@ -17,6 +17,7 @@ function Customers() {
   }, [])
 
   let { name } = useParams();
+  
   let customerName = name.replaceAll("-", " ");
 
   return (
