@@ -12,6 +12,25 @@ class Customers extends Component {
       businessData: {}
     };
   }
+
+   inside = (point, vs) => {
+    // ray-casting algorithm based on
+    // https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html/pnpoly.html
+    
+    var x = point.lng, y = point.lat;
+    
+    var inside = false;
+    for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+        var xi = vs[i].lng, yi = vs[i].lat;
+        var xj = vs[j].lng, yj = vs[j].lat;
+        
+        var intersect = ((yi > y) != (yj > y))
+            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+    }
+    
+    return inside;
+};
   
   componentDidMount = () => {
     /**
@@ -89,11 +108,11 @@ class Customers extends Component {
     console.log(this.state.businessData);
     return (
       <Container className="Customers">
-        <h1>Customers Page</h1>
+        <h1>Item Search</h1>
         <div className="d-flex">
           <InputGroup className="mb-3">
             <InputGroup.Prepend>
-              <InputGroup.Text id="inputGroup-sizing-default">Search Items</InputGroup.Text>
+              <InputGroup.Text id="inputGroup-sizing-default">Search</InputGroup.Text>
             </InputGroup.Prepend>
             <FormControl
               aria-label="Default"
@@ -107,7 +126,7 @@ class Customers extends Component {
         <div>
         <ul>
           {this.state.itemList.map((x)=>{
-            return <li>{x.item.itemName}</li>
+            return <div>{x.item.itemName}</div>
           })}
           </ul>
         </div>
