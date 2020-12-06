@@ -108,13 +108,16 @@ class SearchBar extends Component {
   };
 
   WriteUserData() {
-    let ref = firebase.db.ref(`Customers/${this.state.customer}/cart`);
-    this.state.cart.map((x)=>{ref.push({name: x.item.store, id: x.item.place})});
+    // let ref = firebase.db.ref(`Customers/${this.state.customer}/cart`);
+    // this.state.cart.map((x)=>{ref.push({name: x.item.store, id: x.item.place})});
   }
 
   handleAddToCart = (item) => {
     let cart = this.state.cart;
     cart.push(item);
+    let ref = firebase.db.ref(`Customers/${this.state.customer}/cart`);
+    ref.push(item.item)
+    // this.state.cart.map((x)=>{ref.push({name: x.item.store, id: x.item.place})});
     this.setState({ cart: cart }, () => {this.WriteUserData()});
     // console.log(item);
     // console.log(this.state.cart);
