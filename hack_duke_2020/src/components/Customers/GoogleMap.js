@@ -45,8 +45,13 @@ export class GoogleMap extends Component {
       
             
             let tempPlaces = [];
+            let placeSet = new Set();
             for (let i = 0; i < cartContents.length; i++) {
-                tempPlaces.push(cartContents[i]["place"]);
+                if (!placeSet.has(cartContents[i]["place"])) {
+                    tempPlaces.push(cartContents[i]["place"]);
+                    placeSet.add(cartContents[i]["place"]);
+                }
+                
             }
       
             console.log("TEMPLACES")
