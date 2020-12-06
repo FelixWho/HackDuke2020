@@ -14,6 +14,8 @@ export class GoogleMap extends Component {
   constructor(props) {
     super(props);
 
+    /*place ids, current person*/
+
     this.state = {
       latitude: 35.994,
       longitude: -78.8986,
