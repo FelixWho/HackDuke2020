@@ -22,6 +22,8 @@ class App extends Component {
           <Container>
             <Nav className="mr-auto">
               <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link href="/customer">Login as Customer</Nav.Link>
+              <Nav.Link href="/business">Login as Business</Nav.Link>
             </Nav>
           </Container>
         </Navbar>

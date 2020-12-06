@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Container } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 
 export default class BusinessForm extends React.Component {
     constructor(props) {
@@ -21,21 +23,26 @@ export default class BusinessForm extends React.Component {
   
     render() {
       return (
-        <form action={"http://localhost:3000/business/"+this.state.value}>
-          <div>
-          <label>
-            Business:
-            <input type="text" value={this.state.value} onChange={this.handleChange} />
-          </label>
-          </div>
-          <div>
-          <label>
-            Password:
-            <input type="password"/>
-          </label>
-          </div>
-          <input type="submit" value="Submit" />
-        </form>
+        <Form className="LoginForm">
+        <h1>Login as Business</h1>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Control
+            size="lg"
+            type="email"
+            placeholder="Username"
+            onChange={this.handleChange}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="formBasicPassword">
+          <Form.Control size="lg" type="password" placeholder="Password" />
+        </Form.Group>
+        <Link to={"/business/" + this.state.value}>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Link>
+      </Form>
       );
     }
   }

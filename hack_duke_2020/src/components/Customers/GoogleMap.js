@@ -33,6 +33,8 @@ export class GoogleMap extends Component {
 
     db.ref("Territories").on("value", (snapshot) => {
       this.setState({ territories: snapshot.val() });
+      console.log("new territories:");
+      console.log(snapshot.val());
     });
 
     console.log(this.state.name);
@@ -88,8 +90,8 @@ export class GoogleMap extends Component {
   };
 
   render() {
-    console.log("territories");
-    console.log(this.state.territories);
+    // console.log("territories");
+    // console.log(this.state.territories);
     return (
       <Map
         google={this.props.google}
@@ -172,38 +174,6 @@ export class GoogleMap extends Component {
             />
           );
         })}
-
-        {/* Render polygons around each location marker */}
-        {/* {this.state.placeCoords.map((coord, key) => {
-          return (
-            <Polygon
-              key={key}
-              paths={[
-                {
-                  lat: coord[0] - 0.01,
-                  lng: coord[1] - 0.01,
-                },
-                {
-                  lat: coord[0] + 0.01,
-                  lng: coord[1] - 0.01,
-                },
-                {
-                  lat: coord[0] + 0.01,
-                  lng: coord[1] + 0.01,
-                },
-                {
-                  lat: coord[0] - 0.01,
-                  lng: coord[1] + 0.01,
-                },
-              ]}
-              strokeColor="#00FF00"
-              strokeOpacity={0.8}
-              strokeWeight={2}
-              fillColor="#00FF00"
-              fillOpacity={0.35}
-            />
-          );
-        })} */}
       </Map>
     );
   }
