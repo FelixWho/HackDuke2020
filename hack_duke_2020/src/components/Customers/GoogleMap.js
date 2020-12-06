@@ -15,8 +15,8 @@ export class GoogleMap extends Component {
     super(props);
 
     /*place ids, current person*/
-    console.log("IN GOOGLEMAP")
-    console.log(this.props)
+    console.log("IN GOOGLEMAP");
+    console.log(this.props);
     this.state = {
       lat: 35.994,
       lng: -78.8986,
@@ -24,7 +24,7 @@ export class GoogleMap extends Component {
       placeCoords: [],
       territories: [],
       selectedPlace: "",
-      name: this.props.name
+      name: this.props.name,
     };
   }
 
@@ -34,44 +34,39 @@ export class GoogleMap extends Component {
     db.ref("Territories").on("value", (snapshot) => {
       this.setState({ territories: snapshot.val() });
     });
-    
-    console.log(this.state.name)
+
+    console.log(this.state.name);
 
     if (this.state.name) {
-        db.ref(`Customers/${this.state.name}/cart`).on("value", (snapshot) => {
-            // Call getPlaceCoords() as a callback function so it's only executed after setState
-            let cartContents = Object.values(snapshot.val());
-      
-      
-            
-            let tempPlaces = [];
-            let placeSet = new Set();
-            for (let i = 0; i < cartContents.length; i++) {
-                if (!placeSet.has(cartContents[i]["place"])) {
-                    tempPlaces.push(cartContents[i]["place"]);
-                    placeSet.add(cartContents[i]["place"]);
-                }
-                
-            }
-      
-            console.log("TEMPLACES")
-            console.log(tempPlaces)
-            this.setState({ places: tempPlaces }, () => {
-              this.getPlaceCoords();
-            });
-          });
-        };
+      db.ref(`Customers/${this.state.name}/cart`).on("value", (snapshot) => {
+        // Call getPlaceCoords() as a callback function so it's only executed after setState
+        let cartContents = Object.values(snapshot.val());
 
+        let tempPlaces = [];
+        let placeSet = new Set();
+        for (let i = 0; i < cartContents.length; i++) {
+          if (!placeSet.has(cartContents[i]["place"])) {
+            tempPlaces.push(cartContents[i]);
+            placeSet.add(cartContents[i]["place"]);
+          }
+        }
+
+        console.log("TEMPLACES");
+        console.log(tempPlaces);
+        this.setState({ places: tempPlaces }, () => {
+          this.getPlaceCoords();
+        });
+      });
     }
-    
+  };
 
   getPlaceCoords = async () => {
     let coords = [];
     let results;
     for (let i = 0; i < this.state.places.length; i++) {
-      let place_id = this.state.places[i];
-      console.log("PLACEID")
-      console.log(place_id)
+      let place_id = this.state.places[i]["place"];
+      console.log("PLACEID");
+      console.log(place_id);
       try {
         results = await geocodeByPlaceId(place_id);
       } catch (e) {
@@ -84,9 +79,13 @@ export class GoogleMap extends Component {
     this.setState({ placeCoords: coords });
   };
 
+<<<<<<< HEAD
   onMarkerClick = (props, marker, e) => {
       console.log("IN MARKER CLICK")
       console.log(props)
+=======
+  handleLocationClick = (props, marker, e) => {
+>>>>>>> 16f39d2988be84c5f14e616edc0cede446dd655c
     this.setState({
       selectedPlace: props,
       activeMarker: marker,
@@ -102,18 +101,17 @@ export class GoogleMap extends Component {
         google={this.props.google}
         initialCenter={{ lat: this.state.lat, lng: this.state.lng }}
         zoom={13}
-        onClick={this.onMapClicked}
         className="Map"
       >
         {/* Location markers */}
         {this.state.placeCoords.map((coord, key) => {
-          let placeName = this.state.places[key][0];
+          let placeName = this.state.places[key]["store"];
           return (
             <Marker
               key={key}
               name={placeName}
               position={{ lat: coord[0], lng: coord[1] }}
-              onClick={this.onMarkerClick}
+              onClick={this.handleLocationClick}
             />
           );
         })}
@@ -174,9 +172,19 @@ export class GoogleMap extends Component {
               strokeWeight={2}
               fillColor={t.color}
               fillOpacity={0.35}
+              name={t.leader}
+              position={{ lng: cx, lat: cy }}
+              onClick={this.handleLocationClick}
             />
           );
         })}
+
+        <InfoWindow
+          marker={this.state.activeMarker}
+          visible={this.state.showingInfoWindow}
+        >
+          <h6>{this.state.selectedPlace.name}</h6>
+        </InfoWindow>
 
         {/* Render polygons around each location marker */}
         {/* {this.state.placeCoords.map((coord, key) => {
