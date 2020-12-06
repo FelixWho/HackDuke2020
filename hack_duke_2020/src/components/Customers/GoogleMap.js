@@ -173,13 +173,6 @@ export class GoogleMap extends Component {
           );
         })}
 
-        <InfoWindow
-          marker={this.state.activeMarker}
-          visible={this.state.showingInfoWindow}
-        >
-          <h6>{this.state.selectedPlace.name}</h6>
-        </InfoWindow>
-
         {/* Render polygons around each location marker */}
         {/* {this.state.placeCoords.map((coord, key) => {
           return (

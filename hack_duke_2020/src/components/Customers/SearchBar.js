@@ -107,11 +107,9 @@ class SearchBar extends Component {
     const fuse = new Fuse(items, options);
     const pattern = this.state.query;
     let list = fuse.search(pattern);
-    console.log("FUSE");
     this.setState({
       itemList: list,
     });
-    console.log(list);
   };
 
   handleSearchChange = (event) => {
