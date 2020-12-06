@@ -7,6 +7,7 @@ import {
   Customers,
   Maps,
   Businesses,
+  ConfirmPurchase,
   BusinessPage,
 } from "./components";
 import Navbar from "react-bootstrap/NavBar";
@@ -29,7 +30,7 @@ class App extends Component {
           <Route path="/customer/:name" component={Customers} />
           <Route exact path="/business" component={Businesses} />
           <Route path="/business/:name" component={BusinessPage} />
-          
+          <Route path="/confirm/:storeName" component={ConfirmPurchase} />
           <Route path="/maps/:name" component={Maps} />
           <Route path="/" component={Maps} />
         </Switch>
