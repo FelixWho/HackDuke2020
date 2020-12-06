@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Container, Nav, Button, InputGroup, FormControl } from "react-bootstrap";
-import Fuse from 'fuse.js';
+import { Container, InputGroup, FormControl } from "react-bootstrap";
+import Fuse from "fuse.js";
 import firebase from "../../Firebase/firebase.js";
 
 class Customers extends Component {
@@ -9,22 +9,23 @@ class Customers extends Component {
     this.state = {
       itemList: [],
       query: "",
-      businessData: {}
+      businessData: {},
     };
   }
-  
+
   componentDidMount = () => {
     /**
      * Get business data in JSON form
      */
     let db = firebase.db;
-    let businessRef = db.ref('Stores');
-    businessRef.on('value', snapshot => {
+    let businessRef = db.ref("Stores");
+    businessRef.on("value", (snapshot) => {
       this.setState({
-        businessData: snapshot.val()
+        businessData: snapshot.val(),
       });
-    })
-  }
+    });
+  };
+
   handleSearch = () => {
     let items = [];
     let businessData = this.state.businessData;
@@ -46,15 +47,15 @@ class Customers extends Component {
            * Parsing the data to work with fuse.js
            */
           let itemObject = {
-            "itemName" : itemKey,
-            ...inventory[item]
-          }
+            itemName: itemKey,
+            ...inventory[item],
+          };
           items.push(itemObject);
         } else {
           let itemObject = {
-            "itemName" : item,
-            ...inventory[item]
-          }
+            itemName: item,
+            ...inventory[item],
+          };
           items.push(itemObject);
         }
       }
@@ -62,28 +63,23 @@ class Customers extends Component {
 
     console.log(items);
 
-
-
     const options = {
       threshold: 0.5,
-      keys: [
-        "itemName"
-      ]
-    }
+      keys: ["itemName"],
+    };
     const fuse = new Fuse(items, options);
     const pattern = this.state.query;
     let list = fuse.search(pattern);
     console.log(list);
     this.setState({
-      itemList: list
-    })
-    
-  }
-  
+      itemList: list,
+    });
+  };
+
   handleSearchChange = (event) => {
-    this.setState({query: event.target.value});
+    this.setState({ query: event.target.value });
     this.handleSearch();
-  }
+  };
 
   render() {
     console.log(this.state.businessData);
@@ -93,7 +89,9 @@ class Customers extends Component {
         <div className="d-flex">
           <InputGroup className="mb-3">
             <InputGroup.Prepend>
-              <InputGroup.Text id="inputGroup-sizing-default">Search Items</InputGroup.Text>
+              <InputGroup.Text id="inputGroup-sizing-default">
+                Search Items
+              </InputGroup.Text>
             </InputGroup.Prepend>
             <FormControl
               aria-label="Default"
@@ -102,13 +100,13 @@ class Customers extends Component {
               onChange={this.handleSearchChange}
             />
           </InputGroup>
-          <br/>
+          <br />
         </div>
         <div>
-        <ul>
-          {this.state.itemList.map((x)=>{
-            return <li>{x.item.itemName}</li>
-          })}
+          <ul>
+            {this.state.itemList.map((x) => {
+              return <li>{x.item.itemName}</li>;
+            })}
           </ul>
         </div>
       </Container>
