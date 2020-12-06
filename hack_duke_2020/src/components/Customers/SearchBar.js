@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Badge, Container, InputGroup, FormControl } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
+import {
+  Badge,
+  Container,
+  InputGroup,
+  FormControl,
+  Button,
+} from "react-bootstrap";
 import Fuse from "fuse.js";
 import firebase from "../../Firebase/firebase.js";
 import "./Customers.css";
@@ -13,6 +20,7 @@ class SearchBar extends Component {
       businessData: {},
       cart: [],
       customer: this.props.name,
+<<<<<<< HEAD
       customerData: {},
       territoryData: {},
       territoryCoords: {}
@@ -69,11 +77,34 @@ class SearchBar extends Component {
         var intersect = ((yi > y) != (yj > y))
             && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
         if (intersect) inside = !inside;
+=======
+      redirect: null,
+    };
+  }
+
+  inside = (point, vs) => {
+    // ray-casting algorithm based on
+    // https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html/pnpoly.html
+
+    var x = point.lng,
+      y = point.lat;
+
+    var inside = false;
+    for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+      var xi = vs[i].lng,
+        yi = vs[i].lat;
+      var xj = vs[j].lng,
+        yj = vs[j].lat;
+
+      var intersect =
+        yi > y != yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
+      if (intersect) inside = !inside;
+>>>>>>> 16f39d2988be84c5f14e616edc0cede446dd655c
     }
-    
+
     return inside;
-};
-  
+  };
+
   componentDidMount = () => {
     /**
      * Get business data in JSON form
@@ -172,10 +203,15 @@ class SearchBar extends Component {
     const fuse = new Fuse(items, options);
     const pattern = this.state.query;
     let list = fuse.search(pattern);
+<<<<<<< HEAD
     //console.log(list);
+=======
+    console.log("FUSE");
+>>>>>>> 16f39d2988be84c5f14e616edc0cede446dd655c
     this.setState({
       itemList: list,
     });
+    console.log(list);
   };
 
   handleSearchChange = (event) => {
@@ -192,16 +228,36 @@ class SearchBar extends Component {
     let cart = this.state.cart;
     cart.push(item);
     let ref = firebase.db.ref(`Customers/${this.state.customer}/cart`);
-    ref.push(item.item)
+    ref.push(item.item);
     // this.state.cart.map((x)=>{ref.push({name: x.item.store, id: x.item.place})});
-    this.setState({ cart: cart }, () => {this.WriteUserData()});
+    this.setState({ cart: cart }, () => {
+      this.WriteUserData();
+    });
     // console.log(item);
     // console.log(this.state.cart);
   };
 
+  handleDoneClick = () => {
+    this.setState({ redirect: "/maps/" + this.state.customer });
+  };
+
   render() {
+<<<<<<< HEAD
 
     /*let territory = this.state.territoryData[team]["coordinates"];*/
+=======
+    console.log(this.state.businessData);
+    if (this.state.redirect) {
+      console.log(this.state.redirect);
+      return (
+        <Redirect
+          to={{
+            pathname: this.state.redirect,
+          }}
+        />
+      );
+    }
+>>>>>>> 16f39d2988be84c5f14e616edc0cede446dd655c
 
     return (
       <Container className="Customers">
@@ -213,6 +269,11 @@ class SearchBar extends Component {
               {this.state.cart.length}
             </Badge>
           </h1>
+          <form>
+            <Button type="button" size="sm" onClick={this.handleDoneClick}>
+              <h1>Done</h1>
+            </Button>
+          </form>
         </div>
 
         <div className="d-flex">
