@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Container, InputGroup, FormControl } from "react-bootstrap";
+import { Badge, Container, InputGroup, FormControl } from "react-bootstrap";
 import Fuse from "fuse.js";
 import firebase from "../../Firebase/firebase.js";
+import "./Customers.css";
 
 class Customers extends Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class Customers extends Component {
       itemList: [],
       query: "",
       businessData: {},
+      cart: [],
     };
   }
 
@@ -81,11 +83,28 @@ class Customers extends Component {
     this.handleSearch();
   };
 
+  handleAddToCart = (item) => {
+    let cart = this.state.cart;
+    cart.push(item);
+    this.setState({ cart: cart });
+    // console.log(item);
+    // console.log(this.state.cart);
+  };
+
   render() {
     console.log(this.state.businessData);
     return (
       <Container className="Customers">
-        <h1>Customers Page</h1>
+        <div className="searchbar-text">
+          <h1>Search</h1>
+          <h1>
+            Cart{" "}
+            <Badge pill size="lg" variant="primary">
+              {this.state.cart.length}
+            </Badge>
+          </h1>
+        </div>
+
         <div className="d-flex">
           <InputGroup className="mb-3">
             <InputGroup.Prepend>
@@ -102,13 +121,21 @@ class Customers extends Component {
           </InputGroup>
           <br />
         </div>
-        <div>
-          <ul>
-            {this.state.itemList.map((x) => {
-              return <li>{x.item.itemName}</li>;
-            })}
-          </ul>
-        </div>
+
+        <ul className="search-items">
+          {this.state.itemList.map((x) => {
+            return (
+              <li
+                className="search-item"
+                onClick={() => this.handleAddToCart(x)}
+              >
+                {x.item.itemName}
+                <br />
+                <img className="search-item-img" src={x.item.url} />
+              </li>
+            );
+          })}
+        </ul>
       </Container>
     );
   }
