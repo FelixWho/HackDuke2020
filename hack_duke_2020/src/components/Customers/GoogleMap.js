@@ -15,7 +15,8 @@ export class GoogleMap extends Component {
     super(props);
 
     /*place ids, current person*/
-
+    console.log("IN GOOGLEMAP")
+    console.log(this.props)
     this.state = {
       lat: 35.994,
       lng: -78.8986,
@@ -23,6 +24,7 @@ export class GoogleMap extends Component {
       placeCoords: [],
       territories: [],
       selectedPlace: "",
+      name: this.props.name
     };
   }
 
@@ -32,20 +34,44 @@ export class GoogleMap extends Component {
     db.ref("Territories").on("value", (snapshot) => {
       this.setState({ territories: snapshot.val() });
     });
+    
+    console.log(this.state.name)
 
-    db.ref("Stores").on("value", (snapshot) => {
-      // Call getPlaceCoords() as a callback function so it's only executed after setState
-      this.setState({ places: Object.entries(snapshot.val()) }, () => {
-        this.getPlaceCoords();
-      });
-    });
-  };
+    if (this.state.name) {
+        db.ref(`Customers/${this.state.name}/cart`).on("value", (snapshot) => {
+            // Call getPlaceCoords() as a callback function so it's only executed after setState
+            let cartContents = Object.values(snapshot.val());
+      
+      
+            
+            let tempPlaces = [];
+            let placeSet = new Set();
+            for (let i = 0; i < cartContents.length; i++) {
+                if (!placeSet.has(cartContents[i]["place"])) {
+                    tempPlaces.push(cartContents[i]["place"]);
+                    placeSet.add(cartContents[i]["place"]);
+                }
+                
+            }
+      
+            console.log("TEMPLACES")
+            console.log(tempPlaces)
+            this.setState({ places: tempPlaces }, () => {
+              this.getPlaceCoords();
+            });
+          });
+        };
+
+    }
+    
 
   getPlaceCoords = async () => {
     let coords = [];
     let results;
     for (let i = 0; i < this.state.places.length; i++) {
-      let place_id = this.state.places[i][1]["id"];
+      let place_id = this.state.places[i];
+      console.log("PLACEID")
+      console.log(place_id)
       try {
         results = await geocodeByPlaceId(place_id);
       } catch (e) {
