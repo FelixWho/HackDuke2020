@@ -16,10 +16,8 @@ function CustomerLogin() {
 
   return (
     <Container className="CustomerLogin">
-      <div class="box">
-        <h1>Login</h1>
-        <LoginForm />
-      </div>
+      <h1>Login</h1>
+      <LoginForm />
     </Container>
   );
 }

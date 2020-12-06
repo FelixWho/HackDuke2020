@@ -5,18 +5,12 @@ import { Link } from "react-router-dom";
 export default class LoginForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: "" };
+    this.state = { username: "" };
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
-    this.setState({ value: event.target.value });
-  }
-
-  handleSubmit(event) {
-    alert("A name was submitted: " + this.state.value);
-    event.preventDefault();
+    this.setState({ username: event.target.value });
   }
 
   render() {
@@ -34,7 +28,7 @@ export default class LoginForm extends React.Component {
         <Form.Group controlId="formBasicPassword">
           <Form.Control size="lg" type="password" placeholder="Password" />
         </Form.Group>
-        <Link to={"/" + this.state.value}>
+        <Link to={"/customer/" + this.state.username}>
           <Button variant="primary" type="submit">
             Submit
           </Button>
