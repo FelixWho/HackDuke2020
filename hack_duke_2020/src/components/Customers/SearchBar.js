@@ -202,11 +202,10 @@ class SearchBar extends Component {
             <Badge pill size="lg" variant="primary">
               {this.state.cart.length}
             </Badge>
+            
           </h1>
+          
           <form>
-            <Button type="button" size="sm" onClick={this.handleDoneClick}>
-              <h1>Done</h1>
-            </Button>
           </form>
         </div>
 
@@ -223,6 +222,10 @@ class SearchBar extends Component {
               value={this.state.query}
               onChange={this.handleSearchChange}
             />
+            
+          <Button type="button" size="sm" onClick={this.handleDoneClick}>
+              Done
+            </Button>
           </InputGroup>
           <br />
         </div>
