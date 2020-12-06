@@ -69,6 +69,7 @@ class SearchBar extends Component {
            * Parsing the data to work with fuse.js
            */
           let itemObject = {
+            place: businessData[store]["id"],
             store: store,
             itemName: itemKey,
             ...inventory[item],
@@ -76,6 +77,7 @@ class SearchBar extends Component {
           items.push(itemObject);
         } else {
           let itemObject = {
+            place: businessData[store]["id"],
             store: store,
             itemName: item,
             ...inventory[item],
@@ -107,18 +109,7 @@ class SearchBar extends Component {
 
   WriteUserData() {
     let ref = firebase.db.ref(`Customers/${this.state.customer}/cart`);
-    this.state.cart.map((x)=>{ref.push({name: x.item.store})});
-    
-    /*firebase.db.ref(`Customers/${this.state.customer}`).push(this.state.cart.map((x) => {
-        return x.item.store;
-    }));
-    */
-    /*for(let i = 0; i < this.state.cart.length; i++){
-      firebase.db.ref(`Customers/${this.state.customer}/list`).set({
-        i: this.state.cart[i].itemName
-      });
-    }
-    */
+    this.state.cart.map((x)=>{ref.push({name: x.item.store, id: x.item.place})});
   }
 
   handleAddToCart = (item) => {
