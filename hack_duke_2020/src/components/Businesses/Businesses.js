@@ -16,15 +16,6 @@ function Businesses() {
 
   return (
     <Container className="Businesses">
-      <div>
-        <ul>
-          {Object.entries(businessData).map(business => (
-            <div>{business[0]}</div>
-          ))
-          }
-        </ul>
-      </div>
-      
       <BusinessForm></BusinessForm>
     </Container>
   );
