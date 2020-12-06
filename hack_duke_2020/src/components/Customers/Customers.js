@@ -66,20 +66,24 @@ class Customers extends Component {
 
 
     const options = {
-      threshold: 0.4,
-      keys: "itemName"
+      threshold: 0.5,
+      keys: [
+        "itemName"
+      ]
     }
-    // const fuse = new Fuse(items, options);
-    // const pattern = this.state.query;
-    // let list = fuse.search(pattern);
-    // this.setState({
-    //   itemList: list
-    // })
+    const fuse = new Fuse(items, options);
+    const pattern = this.state.query;
+    let list = fuse.search(pattern);
+    console.log(list);
+    this.setState({
+      itemList: list
+    })
     
   }
   
   handleSearchChange = (event) => {
     this.setState({query: event.target.value});
+    this.handleSearch();
   }
 
   render() {
@@ -98,16 +102,15 @@ class Customers extends Component {
               value={this.state.query}
               onChange={this.handleSearchChange}
             />
-            <InputGroup.Append>
-              <Button onClick={this.handleSearch}> 
-                Search 
-              </Button>
-            </InputGroup.Append>
           </InputGroup>
-
+          <br/>
+        </div>
+        <div>
+        <ul>
           {this.state.itemList.map((x)=>{
-            return x;
+            return <li>{x.item.itemName}</li>
           })}
+          </ul>
         </div>
       </Container>
     );
