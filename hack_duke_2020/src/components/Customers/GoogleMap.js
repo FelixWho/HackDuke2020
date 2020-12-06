@@ -117,12 +117,43 @@ export class GoogleMap extends Component {
         })} */}
 
         {this.state.territories.map((t, key) => {
-            
-            let coord = t.coordinates;
-            console.log(coord[0]);
+
+            let points = t.coordinates;
+            console.log(points[0]);
+            //https://stackoverflow.com/questions/45660743/sort-points-in-counter-clockwise-in-javascript
+            points.sort((a,b)=>a.y - b.y);
+
+            // Get center y
+            const cy = (points[0].lat + points[points.length -1].lat) / 2;
+
+            // Sort from right to left
+            points.sort((a,b)=>b.lng - a.lng);
+
+            // Get center x
+            const cx = (points[0].lng + points[points.length -1].lng) / 2;
+
+            // Center point
+            const center = {lng:cx,lat:cy};
+            var startAng;
+            points.forEach(point => {
+                var ang = Math.atan2(point.lat - center.lat,point.lng - center.lng);
+                if(!startAng){ startAng = ang }
+                else {
+                    if(ang < startAng){  // ensure that all points are clockwise of the start point
+                        ang += Math.PI * 2;
+                    }
+                }
+                point.angle = ang; // add the angle to the point
+            });
+
+            points.sort((a,b)=> a.angle - b.angle);
+            const ccwPoints = points.reverse();
+            ccwPoints.unshift(ccwPoints.pop());
+
+            console.log(points[0].lng);
             return <Polygon
             key={key}
-            paths={Object.values(coord)}
+            paths={Object.values(points)}
             strokeColor={t.color}
             strokeOpacity={0.8}
             strokeWeight={2}
