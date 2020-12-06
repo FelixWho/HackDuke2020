@@ -35,7 +35,7 @@ function BusinessPage() {
         <div style={{fontSize: "5em", fontWeight: "bold"}}>{name}</div>
 
         <div style={{fontSize: "4em", fontWeight: "bold"}}>Discount</div>
-        
+
         <ChangeDiscount discount={businessData.discount} store={businessName}/>
 
         <div style={{fontSize: "4em", fontWeight: "bold"}}>Inventory</div>
@@ -49,7 +49,7 @@ function BusinessPage() {
           <Row md={3} lg={3} style={{height: "30vh"}}>
             <Col className="my-auto" style={{fontSize: "2.5em"}}><div>{business[0]}</div></Col>
             <Col className="my-auto" style={{fontSize: "2.5em"}}><div>${business[1].Price.toFixed(2)}</div></Col>
-            <Col className="my-auto"><img src={business[1].url} style={{width: "60%", height: "auto", borderRadius: "50px"}}/></Col>
+            <Col className="my-auto"><img src={business[1].url} style={{maxWidth: "80vw", maxHeight: "25vh", borderRadius: "20px"}}/></Col>
           </Row>
         ))
         }

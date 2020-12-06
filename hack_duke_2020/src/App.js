@@ -19,7 +19,7 @@ class App extends Component {
           <Route path="/customers" component={Customers} />
           <Route path="/businesses" component={Businesses} />
           <Route path="/business/:name" component={BusinessPage} />
-          <Route path="/" component={() => <div>Landing Page</div>} />
+          <Route path="/" component={Customers} />
         </Switch>
       </div>
     );
