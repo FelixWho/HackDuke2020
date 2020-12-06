@@ -50,19 +50,56 @@ class SearchBar extends Component {
     /**
      * Get business data in JSON form
      */
+
     let db = firebase.db;
+    let territoryRef = db.ref("Territories");
+    territoryRef.on("value", (snapshot) => {
+      this.setState({
+        territoryData: snapshot.val(),
+      });
+    });
+
     let businessRef = db.ref("Stores");
     businessRef.on("value", (snapshot) => {
       this.setState({
         businessData: snapshot.val(),
       });
     });
+
+    let customerRef = db.ref("Customers");
+    customerRef.on("value", (snapshot) => {
+      this.setState({
+        customerData: snapshot.val(),
+      });
+    });
   };
 
   handleSearch = () => {
+    let team = null;
+    let coords = null;
+    if (
+      this.state.customerData[this.state.customer] != null &&
+      this.state.territoryData != null
+    ) {
+      team = this.state.customerData[this.state.customer]["Team"];
+      console.log(this.state.territoryData[team]);
+      if (
+        this.state.territoryData[team] != undefined &&
+        this.state.territoryData[team]["coordinates"] != undefined
+      ) {
+        coords = this.state.territoryData[team]["coordinates"];
+        console.log(coords);
+      }
+    }
+
     let items = [];
     let businessData = this.state.businessData;
     for (const store in businessData) {
+      let split = this.state.businessData[store]["coordinates"].split(", ");
+      let storeCoord = { lat: parseFloat(split[0]), lng: parseFloat(split[1]) };
+      console.log(this.inside(storeCoord, coords));
+      //console.log(coords);
+      //console.log(storeCoord);
       let inventory = businessData[store]["Inventory"];
       for (const item in inventory) {
         if (item in items) {
@@ -80,6 +117,8 @@ class SearchBar extends Component {
            * Parsing the data to work with fuse.js
            */
           let itemObject = {
+            discountBool: this.inside(storeCoord, coords),
+            discountAmount: this.state.businessData[store]["discount"],
             place: businessData[store]["id"],
             store: store,
             itemName: itemKey,
@@ -88,6 +127,8 @@ class SearchBar extends Component {
           items.push(itemObject);
         } else {
           let itemObject = {
+            discountBool: this.inside(storeCoord, coords),
+            discountAmount: this.state.businessData[store]["discount"],
             place: businessData[store]["id"],
             store: store,
             itemName: item,
@@ -98,7 +139,7 @@ class SearchBar extends Component {
       }
     }
 
-    console.log(items);
+    //console.log(items);
 
     const options = {
       threshold: 0.5,
@@ -188,16 +229,38 @@ class SearchBar extends Component {
 
         <ul className="search-items">
           {this.state.itemList.map((x) => {
-            return (
-              <li
-                className="search-item"
-                onClick={() => this.handleAddToCart(x)}
-              >
-                {x.item.itemName}
-                <br />
-                <img className="search-item-img" src={x.item.url} />
-              </li>
-            );
+            if (!x.item.discountBool) {
+              return (
+                <li
+                  className="search-item"
+                  onClick={() => this.handleAddToCart(x)}
+                >
+                  {x.item.itemName}
+                  <br />
+                  <img className="search-item-img" src={x.item.url} />
+                  <div style={{ fontSize: "0.7em" }}>
+                    Sold by: {x.item.store}
+                  </div>
+                </li>
+              );
+            } else {
+              return (
+                <li
+                  className="search-item-discount"
+                  onClick={() => this.handleAddToCart(x)}
+                >
+                  {x.item.itemName}
+                  <br />
+                  <img className="search-item-img" src={x.item.url} />
+                  <div style={{ fontSize: "0.7em" }}>
+                    Sold by: {x.item.store}
+                  </div>
+                  <div style={{ fontSize: "0.7em" }}>
+                    DISCOUNT: {x.item.discountAmount}%
+                  </div>
+                </li>
+              );
+            }
           })}
         </ul>
       </Container>
