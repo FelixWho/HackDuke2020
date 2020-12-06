@@ -161,7 +161,7 @@ export class GoogleMap extends Component {
             <Polygon
               key={key}
               paths={Object.values(points)}
-              strokeColor={t.color}
+              strokeColor={"#330000"}
               strokeOpacity={0.8}
               strokeWeight={2}
               fillColor={t.color}
