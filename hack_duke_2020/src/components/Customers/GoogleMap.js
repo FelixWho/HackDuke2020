@@ -58,7 +58,7 @@ export class GoogleMap extends Component {
     this.setState({ placeCoords: coords });
   };
 
-  onMarkerClick = (props, marker, e) => {
+  handleLocationClick = (props, marker, e) => {
     this.setState({
       selectedPlace: props,
       activeMarker: marker,
@@ -74,7 +74,6 @@ export class GoogleMap extends Component {
         google={this.props.google}
         initialCenter={{ lat: this.state.lat, lng: this.state.lng }}
         zoom={13}
-        onClick={this.onMapClicked}
         className="Map"
       >
         {/* Location markers */}
@@ -85,7 +84,7 @@ export class GoogleMap extends Component {
               key={key}
               name={placeName}
               position={{ lat: coord[0], lng: coord[1] }}
-              onClick={this.onMarkerClick}
+              onClick={this.handleLocationClick}
             />
           );
         })}
@@ -146,9 +145,19 @@ export class GoogleMap extends Component {
               strokeWeight={2}
               fillColor={t.color}
               fillOpacity={0.35}
+              name={t.leader}
+              position={{ lng: cx, lat: cy }}
+              onClick={this.handleLocationClick}
             />
           );
         })}
+
+        <InfoWindow
+          marker={this.state.activeMarker}
+          visible={this.state.showingInfoWindow}
+        >
+          <h6>{this.state.selectedPlace.name}</h6>
+        </InfoWindow>
 
         {/* Render polygons around each location marker */}
         {/* {this.state.placeCoords.map((coord, key) => {
