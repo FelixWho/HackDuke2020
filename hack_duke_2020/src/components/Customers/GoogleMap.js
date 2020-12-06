@@ -79,13 +79,7 @@ export class GoogleMap extends Component {
     this.setState({ placeCoords: coords });
   };
 
-<<<<<<< HEAD
-  onMarkerClick = (props, marker, e) => {
-      console.log("IN MARKER CLICK")
-      console.log(props)
-=======
   handleLocationClick = (props, marker, e) => {
->>>>>>> 16f39d2988be84c5f14e616edc0cede446dd655c
     this.setState({
       selectedPlace: props,
       activeMarker: marker,
@@ -167,7 +161,7 @@ export class GoogleMap extends Component {
             <Polygon
               key={key}
               paths={Object.values(points)}
-              strokeColor={t.color}
+              strokeColor={"#330000"}
               strokeOpacity={0.8}
               strokeWeight={2}
               fillColor={t.color}
