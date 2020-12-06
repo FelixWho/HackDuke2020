@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Container, Nav, Button, InputGroup, FormControl } from "react-bootstrap";
-import Fuse from 'fuse.js';
+import { Badge, Container, InputGroup, FormControl } from "react-bootstrap";
+import Fuse from "fuse.js";
 import firebase from "../../Firebase/firebase.js";
+import "./Customers.css";
 
 class Customers extends Component {
   constructor(props) {
@@ -9,7 +10,8 @@ class Customers extends Component {
     this.state = {
       itemList: [],
       query: "",
-      businessData: {}
+      businessData: {},
+      cart: [],
     };
   }
 
@@ -37,13 +39,14 @@ class Customers extends Component {
      * Get business data in JSON form
      */
     let db = firebase.db;
-    let businessRef = db.ref('Stores');
-    businessRef.on('value', snapshot => {
+    let businessRef = db.ref("Stores");
+    businessRef.on("value", (snapshot) => {
       this.setState({
-        businessData: snapshot.val()
+        businessData: snapshot.val(),
       });
-    })
-  }
+    });
+  };
+
   handleSearch = () => {
     let items = [];
     let businessData = this.state.businessData;
@@ -65,15 +68,15 @@ class Customers extends Component {
            * Parsing the data to work with fuse.js
            */
           let itemObject = {
-            "itemName" : itemKey,
-            ...inventory[item]
-          }
+            itemName: itemKey,
+            ...inventory[item],
+          };
           items.push(itemObject);
         } else {
           let itemObject = {
-            "itemName" : item,
-            ...inventory[item]
-          }
+            itemName: item,
+            ...inventory[item],
+          };
           items.push(itemObject);
         }
       }
@@ -81,38 +84,52 @@ class Customers extends Component {
 
     console.log(items);
 
-
-
     const options = {
       threshold: 0.5,
-      keys: [
-        "itemName"
-      ]
-    }
+      keys: ["itemName"],
+    };
     const fuse = new Fuse(items, options);
     const pattern = this.state.query;
     let list = fuse.search(pattern);
     console.log(list);
     this.setState({
-      itemList: list
-    })
-    
-  }
-  
+      itemList: list,
+    });
+  };
+
   handleSearchChange = (event) => {
-    this.setState({query: event.target.value});
+    this.setState({ query: event.target.value });
     this.handleSearch();
-  }
+  };
+
+  handleAddToCart = (item) => {
+    let cart = this.state.cart;
+    cart.push(item);
+    this.setState({ cart: cart });
+    // console.log(item);
+    // console.log(this.state.cart);
+  };
 
   render() {
     console.log(this.state.businessData);
     return (
       <Container className="Customers">
-        <h1>Item Search</h1>
+        <div className="searchbar-text">
+          <h1>Search</h1>
+          <h1>
+            Cart{" "}
+            <Badge pill size="lg" variant="primary">
+              {this.state.cart.length}
+            </Badge>
+          </h1>
+        </div>
+
         <div className="d-flex">
           <InputGroup className="mb-3">
             <InputGroup.Prepend>
-              <InputGroup.Text id="inputGroup-sizing-default">Search</InputGroup.Text>
+              <InputGroup.Text id="inputGroup-sizing-default">
+                Search Items
+              </InputGroup.Text>
             </InputGroup.Prepend>
             <FormControl
               aria-label="Default"
@@ -121,15 +138,23 @@ class Customers extends Component {
               onChange={this.handleSearchChange}
             />
           </InputGroup>
-          <br/>
+          <br />
         </div>
-        <div>
-        <ul>
-          {this.state.itemList.map((x)=>{
-            return <div>{x.item.itemName}</div>
+
+        <ul className="search-items">
+          {this.state.itemList.map((x) => {
+            return (
+              <li
+                className="search-item"
+                onClick={() => this.handleAddToCart(x)}
+              >
+                {x.item.itemName}
+                <br />
+                <img className="search-item-img" src={x.item.url} />
+              </li>
+            );
           })}
-          </ul>
-        </div>
+        </ul>
       </Container>
     );
   }

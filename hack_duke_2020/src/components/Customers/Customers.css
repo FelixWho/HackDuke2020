@@ -1,0 +1,26 @@
+.searchbar-text {
+  display: flex;
+  justify-content: space-between;
+}
+
+.search-items {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.search-item {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  flex: 0 0 33%;
+}
+
+.search-item:hover {
+  cursor: pointer;
+  background-color: #f6f6f6;
+}
+
+.search-item-img {
+  max-width: 5rem;
+  max-height: auto;
+}
