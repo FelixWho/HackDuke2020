@@ -10,7 +10,7 @@ class App extends Component {
         <Switch>
           <Route path="/customers" component={Customers} />
           <Route path="/businesses" component={Businesses} />
-          <Route path="/" component={() => <div>Landing Page</div>} />
+          <Route path="/" component={Customers} />
         </Switch>
       </div>
     );
