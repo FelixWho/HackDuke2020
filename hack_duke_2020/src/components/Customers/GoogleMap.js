@@ -30,7 +30,7 @@ export class GoogleMap extends Component {
   
 
   componentDidMount = () => {
-    let db = firebase.database();
+    let db = firebase.db;
     let temp_territories = [];
 
     db.ref('Territories').once('value').then((snapshot) => {
