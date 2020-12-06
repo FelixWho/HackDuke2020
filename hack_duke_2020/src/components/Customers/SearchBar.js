@@ -196,15 +196,12 @@ class SearchBar extends Component {
     return (
       <Container className="Customers">
         <div className="searchbar-text">
-          <h1>Search</h1>
           <h1>
             Cart{" "}
             <Badge pill size="lg" variant="primary">
               {this.state.cart.length}
             </Badge>
-            
           </h1>
-          
           <form>
           </form>
         </div>
@@ -222,8 +219,7 @@ class SearchBar extends Component {
               value={this.state.query}
               onChange={this.handleSearchChange}
             />
-            
-          <Button type="button" size="sm" onClick={this.handleDoneClick}>
+            <Button type="button" size="sm" onClick={this.handleDoneClick}>
               Done
             </Button>
           </InputGroup>
