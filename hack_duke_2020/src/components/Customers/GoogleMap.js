@@ -85,6 +85,8 @@ export class GoogleMap extends Component {
   };
 
   onMarkerClick = (props, marker, e) => {
+      console.log("IN MARKER CLICK")
+      console.log(props)
     this.setState({
       selectedPlace: props,
       activeMarker: marker,
