@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
-import { Customers, Maps, Businesses, BusinessPage } from "./components";
+import { CustomerLogin, Customers, Maps, Businesses, BusinessPage } from "./components";
 import Navbar from "react-bootstrap/NavBar";
 import Nav from "react-bootstrap/Nav";
 import "./App.css";
@@ -17,9 +17,10 @@ class App extends Component {
         </Navbar>
         <Switch>
           <Route path="/maps" component={Maps} />
-          <Route path="/customers" component={Customers} />
+          <Route path="/customers" component={CustomerLogin} />
           <Route path="/businesses" component={Businesses} />
           <Route path="/business/:name" component={BusinessPage} />
+          <Route path="/customer/:name" component={Customers} />
           <Route path="/" component={Maps} />
         </Switch>
       </div>
