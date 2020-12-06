@@ -31,11 +31,21 @@ export class GoogleMap extends Component {
 
   componentDidMount = () => {
     let db = firebase.db;
-    let temp_territories = [];
+    let temp_places = [];
 
     db.ref('Territories').on('value', (snapshot) => {
         //console.log(snapshot.val());
         this.setState({territories: snapshot.val()});
+    })
+
+    db.ref('Stores').on('value', (snapshot) => {
+        //console.log(snapshot.val());
+        let places = Object.entries(snapshot.val())
+        console.log(places)
+        for (let i = 0; i < places.length; i++) {
+            temp_places.push(places[i][1]['id']);
+        }
+        this.setState({place_ids: temp_places});
     })
     this.getBusinessCoords();
   };
@@ -46,10 +56,18 @@ export class GoogleMap extends Component {
 
   getBusinessCoords = async () => {
     let coords = [];
-
+    let results
     for (let i = 0; i < this.state.place_ids.length; i++) {
+     
       let place_id = this.state.place_ids[i];
-      let results = await geocodeByPlaceId(place_id);
+      try {
+        results = await geocodeByPlaceId(place_id);
+
+      }
+      catch (e) {
+          console.log(e)
+      }
+      
 
       results.map((res) => {
         coords.push([res.geometry.location.lat(), res.geometry.location.lng()]);
