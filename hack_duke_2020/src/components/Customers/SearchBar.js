@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Badge, Container, InputGroup, FormControl } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
+import { Badge, Container, InputGroup, FormControl, Button } from "react-bootstrap";
 import Fuse from "fuse.js";
 import firebase from "../../Firebase/firebase.js";
 import "./Customers.css";
@@ -12,7 +13,8 @@ class SearchBar extends Component {
       query: "",
       businessData: {},
       cart: [],
-      customer: this.props.name
+      customer: this.props.name,
+      redirect: null
     };
   }
 
@@ -36,6 +38,8 @@ class SearchBar extends Component {
 };
   
   componentDidMount = () => {
+
+    
     /**
      * Get business data in JSON form
      */
@@ -123,8 +127,20 @@ class SearchBar extends Component {
     // console.log(this.state.cart);
   };
 
+  handleDoneClick = () => {
+    this.setState({redirect: '/maps/' + this.state.customer})
+  }
+
   render() {
     console.log(this.state.businessData);
+    if (this.state.redirect) {
+      console.log(this.state.redirect)
+      return <Redirect to={{
+        pathname: this.state.redirect,
+      }}
+      />
+    }
+    
     return (
       <Container className="Customers">
         <div className="searchbar-text">
@@ -135,6 +151,14 @@ class SearchBar extends Component {
               {this.state.cart.length}
             </Badge>
           </h1>
+          <form>
+            <Button type='button' size="sm" onClick={this.handleDoneClick}>
+              <h1>Done</h1>
+              
+            </Button>
+            
+          </form>
+          
         </div>
 
         <div className="d-flex">

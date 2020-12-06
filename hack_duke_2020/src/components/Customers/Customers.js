@@ -17,14 +17,13 @@ function Customers() {
   }, [])
 
   let { name } = useParams();
-  console.log("This is")
-  console.log(name)
+  
   let customerName = name.replaceAll("-", " ");
 
   return (
     <Container className="Customers">
       
-      <SearchBar name={"fdssdf"}></SearchBar>
+      <SearchBar name={customerName}></SearchBar>
     </Container>
   );
 }
